@@ -1,5 +1,6 @@
 
-var webpack = require('webpack');
+// var webpack = require('webpack');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   name: 'default',
@@ -14,16 +15,12 @@ module.exports = {
   },
   devtool: 'source-map',
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        screw_ie8: false
-      },
-      mangle: {
-        screw_ie8: false
-      },
-      output: {
-        screw_ie8: false,
-        beautify: false
+    new UglifyJSPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        output: {
+          beautify: false
+        }
       }
     })
   ],
@@ -36,6 +33,9 @@ module.exports = {
     }, {
       test: /\json3.js/,
       loader: 'imports?define=>false'
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
     }]
   }
 };

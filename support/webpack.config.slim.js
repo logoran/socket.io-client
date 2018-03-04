@@ -1,5 +1,6 @@
 
 var webpack = require('webpack');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   name: 'slim',
@@ -16,7 +17,14 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new webpack.NormalModuleReplacementPlugin(/debug/, process.cwd() + '/support/noop.js'),
-    new webpack.optimize.UglifyJsPlugin()
+    new UglifyJSPlugin({
+      sourceMap: true,
+      uglifyOptions: {
+        output: {
+          beautify: false
+        }
+      }
+    })
   ],
   module: {
     loaders: [{
@@ -30,6 +38,9 @@ module.exports = {
     }, {
       test: /\.js$/,
       loader: 'strip-loader?strip[]=debug'
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
     }]
   }
 };

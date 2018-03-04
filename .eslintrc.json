@@ -6,6 +6,9 @@
     "node": true
   },
   "rules": {
+    "space-before-function-paren": 0,
+    "space-before-blocks": 0,
+    "eqeqeq": 0,
     "yoda": 0,
     "semi": [2, "always"],
     "no-extra-semi": 2,
