@@ -1,6 +1,6 @@
 {
   "name": "logoran-socket.io-client",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "keywords": [
     "realtime",
     "framework",
@@ -64,7 +64,7 @@
     "istanbul": "^0.4.5",
     "json-loader": "^0.5.7",
     "logoran-joi-router": "^1.1.1",
-    "logoran-socket.io": "1.1.1",
+    "logoran-socket.io": "1.1.2",
     "mocha": "^3.3.0",
     "strip-loader": "0.1.2",
     "text-blob-builder": "0.0.1",
