@@ -566,7 +566,7 @@ describe('connection', function () {
     socket.on('hello response', function (data) {
       done();
     });
-    socket.Http('get', {name: 'leo'}, '/hello', 'world');
+    socket.Http('get', {name: 'leo'}, '/hello/100?age=36', 'world');
   });
 
   methods.forEach(function (method) {
@@ -575,7 +575,7 @@ describe('connection', function () {
       socket.on('hello response', function (data) {
         done();
       });
-      socket[method]({name: 'leo'}, '/hello', 'world');
+      socket[method]({name: 'leo'}, '/hello/100?age=36', 'world');
     });
   });
 

@@ -5,16 +5,21 @@ var io = require('logoran-socket.io');
 var server = io(process.env.ZUUL_PORT || 3210, { pingInterval: 2000 });
 var expect = require('expect.js');
 var router = require('logoran-joi-router');
+var Joi = router.Joi;
 
-const routers = router();
+var routers = router();
 routers.route({
-  path: '/hello',
+  path: '/hello/:id',
   method: ['get', 'post', 'head', 'options', 'put', 'patch', 'delete'],
   handler: function(ctx, next) {
     expect(ctx.headers).to.eql({name: 'leo'});
     expect(ctx.request.body).to.eql('world');
     ctx.socket.emit('hello response');
     next();
+  },
+  validate: {
+    query: {age: Joi.number().integer().required()},
+    params: {id: Joi.number().integer().required()}
   }
 }).route({
   path: '/name',

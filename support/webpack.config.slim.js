@@ -30,7 +30,12 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: /(node_modules|bower_components)/,
-      loader: 'babel', // 'babel-loader' is also a legal name to reference
+      loader: 'babel-loader',
+      query: { presets: ['es2015'] }
+    }, {
+      test: /\.js$/,
+      include: /node_modules\/logoran-compose/,
+      loader: 'babel-loader',
       query: { presets: ['es2015'] }
     }, {
       test: /\json3.js/,
