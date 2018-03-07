@@ -1,9 +1,41 @@
 
 // this is a test server to support tests which make requests
 
-var io = require('socket.io');
+var io = require('logoran-socket.io');
 var server = io(process.env.ZUUL_PORT || 3210, { pingInterval: 2000 });
 var expect = require('expect.js');
+var router = require('logoran-joi-router');
+
+const routers = router();
+routers.route({
+  path: '/hello',
+  method: ['get', 'post', 'head', 'options', 'put', 'patch', 'delete'],
+  handler: function(ctx, next) {
+    expect(ctx.headers).to.eql({name: 'leo'});
+    expect(ctx.request.body).to.eql('world');
+    ctx.socket.emit('hello response');
+    next();
+  }
+}).route({
+  path: '/name',
+  method: ['get', 'post', 'head', 'options', 'put', 'patch', 'delete'],
+  handler: function(ctx, next) {
+    expect(ctx.headers).to.eql({name: 'leo'});
+    expect(ctx.request.body).to.eql('world');
+    ctx.body = 'lisa';
+    ctx.set('title', 'great');
+    next();
+  }
+}).route({
+  path: '/throw',
+  method: ['get', 'post', 'head', 'options', 'put', 'patch', 'delete'],
+  handler: function(ctx, next) {
+    expect(ctx.headers).to.eql({name: 'leo'});
+    expect(ctx.request.body).to.eql('world');
+    ctx.throw(400, 'don\'t server', {headers: {ab: 100}});
+    next();
+  }
+});
 
 server.of('/foo').on('connection', function () {
   // register namespace
@@ -136,4 +168,6 @@ server.on('connection', function (socket) {
   socket.on('getHandshake', function (cb) {
     cb(socket.handshake);
   });
+
+  socket.use(routers.middleware());
 });

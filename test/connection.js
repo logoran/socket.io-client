@@ -550,4 +550,112 @@ describe('connection', function () {
       socket.emit('blob3', blob);
     });
   }
+
+  var methods = [
+    'Head',
+    'Options',
+    'Get',
+    'Put',
+    'Patch',
+    'Post',
+    'Delete'
+  ];
+
+  it('should send http request through Http', function (done) {
+    var socket = io({ forceNew: true });
+    socket.on('hello response', function (data) {
+      done();
+    });
+    socket.Http('get', {name: 'leo'}, '/hello', 'world');
+  });
+
+  methods.forEach(function (method) {
+    it('should send http request through ' + method, function (done) {
+      var socket = io({ forceNew: true });
+      socket.on('hello response', function (data) {
+        done();
+      });
+      socket[method]({name: 'leo'}, '/hello', 'world');
+    });
+  });
+
+  it('should send http request through Http and get response', function (done) {
+    var socket = io({ forceNew: true });
+    socket.on('message', function (data) {
+      done(new Error('nope'));
+    });
+    socket.Http('post', {name: 'leo'}, '/name', 'world', function(data) {
+      expect(data.status).to.eql(200);
+      expect(data.headers).to.eql({title: 'great'});
+      expect(data.body).to.eql('lisa');
+      done();
+    });
+  });
+
+  methods.forEach(function (method) {
+    it('should send http request through ' + method + ' and get response', function (done) {
+      var socket = io({ forceNew: true });
+      socket.on('message', function (data) {
+        done(new Error('nope'));
+      });
+      socket[method]({name: 'leo'}, '/name', 'world', function(data) {
+        expect(data.status).to.eql(200);
+        expect(data.headers).to.eql({title: 'great'});
+        if (method != 'Head') {
+          expect(data.body).to.eql('lisa');
+        } else {
+          expect(data.body).to.eql(undefined);
+        }
+        done();
+      });
+    });
+  });
+
+  it('should send http request through Http and get error event', function (done) {
+    var socket = io({ forceNew: true });
+    socket.on('error', function (data) {
+      expect(data).to.eql('don\'t server');
+      done();
+    });
+    socket.Http('post', {name: 'leo'}, '/throw', 'world');
+  });
+
+  methods.forEach(function (method) {
+    it('should send http request through ' + method + ' and get error event', function (done) {
+      var socket = io({ forceNew: true });
+      socket.on('error', function (data) {
+        expect(data).to.eql('don\'t server');
+        done();
+      });
+      socket[method]({name: 'leo'}, '/throw', 'world');
+    });
+  });
+
+  it('should send http request through Http and get response', function (done) {
+    var socket = io({ forceNew: true });
+    socket.on('message', function (data) {
+      done(new Error('nope'));
+    });
+    socket.Http('post', {name: 'leo'}, '/throw', 'world', function(data) {
+      expect(data.status).to.eql(400);
+      expect(data.body).to.eql('don\'t server');
+      expect(data.headers.ab).to.eql(100);
+      done();
+    });
+  });
+
+  methods.forEach(function (method) {
+    it('should send http request through ' + method + ' and get response', function (done) {
+      var socket = io({ forceNew: true });
+      socket.on('message', function (data) {
+        done(new Error('nope'));
+      });
+      socket[method]({name: 'leo'}, '/throw', 'world', function(data) {
+        expect(data.status).to.eql(400);
+        expect(data.body).to.eql('don\'t server');
+        expect(data.headers.ab).to.eql(100);
+        done();
+      });
+    });
+  });
 });
