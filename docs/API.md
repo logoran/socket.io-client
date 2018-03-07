@@ -57,7 +57,7 @@
 
 ### IO
 
-Exposed as the `io` namespace in the standalone build, or the result of calling `require('socket.io-client')`.
+Exposed as the `io` namespace in the standalone build, or the result of calling `require('logoran-socket.io-client')`.
 
 ```html
 <script src="/socket.io/socket.io.js"></script>
@@ -67,9 +67,9 @@ Exposed as the `io` namespace in the standalone build, or the result of calling 
 ```
 
 ```js
-const io = require('socket.io-client');
+const io = require('logoran-socket.io-client');
 // or with import syntax
-import io from 'socket.io-client';
+import io from 'logoran-socket.io-client';
 ```
 
 #### io.protocol
@@ -129,7 +129,7 @@ const socket = io('http://localhost', {
 });
 
 // server-side
-const io = require('socket.io')({
+const io = require('logoran-socket.io')({
   path: '/myownpath'
 });
 ```
@@ -152,7 +152,7 @@ The request URLs will look like: `localhost/mypath/?EIO=3&transport=polling&sid=
 const socket = io('http://localhost?token=abc');
 
 // server-side
-const io = require('socket.io')();
+const io = require('logoran-socket.io')();
 
 // middleware
 io.use((socket, next) => {
@@ -206,7 +206,7 @@ const socket = io({
 });
 
 // server-side
-const io = require('socket.io')();
+const io = require('logoran-socket.io')();
 
 // middleware
 io.use((socket, next) => {
@@ -236,7 +236,7 @@ socket.on('reconnect_attempt', () => {
 
 ##### With a custom parser
 
-The default [parser](https://github.com/socketio/socket.io-parser) promotes compatibility (support for `Blob`, `File`, binary check) at the expense of performance. A custom parser can be provided to match the needs of your application. Please see the example [here](https://github.com/socketio/socket.io/tree/master/examples/custom-parsers).
+The default [parser](https://github.com/socketio/socket.io-parser) promotes compatibility (support for `Blob`, `File`, binary check) at the expense of performance. A custom parser can be provided to match the needs of your application. Please see the example [here](https://github.com/logoran/socket.io/tree/master/examples/custom-parsers).
 
 ```js
 const parser = require('socket.io-msgpack-parser'); // or require('socket.io-json-parser')
@@ -245,7 +245,7 @@ const socket = io({
 });
 
 // the server-side must have the same parser, to be able to communicate
-const io = require('socket.io')({
+const io = require('logoran-socket.io')({
   parser: parser
 });
 ```
